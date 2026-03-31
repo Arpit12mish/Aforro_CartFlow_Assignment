@@ -1,97 +1,245 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# React Native Cart Flow Assignment – Aforro
 
-# Getting Started
+## App Demo
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+Click below to watch full demo of the cart flow implementation:
 
-## Step 1: Start Metro
+[![App Demo](./assets/image.png)](https://drive.google.com/file/d/1K8uL5KFNPUjlF-c76kAM0pCi8KmeS6bP/view?usp=sharing)
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Overview
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+This project implements a complete cart flow experience in React Native based on the provided Figma design.
 
-```sh
-# Using npm
-npm start
+The focus of this assignment was not limited to UI implementation. It aims to replicate a real-world quick commerce cart system, handling multiple user scenarios such as product selection, cart management, delivery conditions, coupon application, and checkout readiness.
 
-# OR using Yarn
-yarn start
-```
+The implementation follows a clean architecture, reusable component design, and proper state handling to simulate a production-level application.
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## Assignment Reference
 
-### Android
+- Objective: Implement complete cart flow from Figma
+- UI Accuracy: Strict adherence to spacing, typography, and layout
+- Logic: No hardcoded values; all calculations are dynamic
 
-```sh
-# Using npm
-npm run android
+Reference Document:  
+React Native Technical Assignment – Aforro  
+(Refer to the shared assignment PDF)
 
-# OR using Yarn
-yarn android
-```
+---
 
-### iOS
+## Tech Stack
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+- React Native (CLI / Expo)
+- TypeScript
+- Functional Components with Hooks
+- Context API for state management
+- Modular architecture with reusable components
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+---
 
-```sh
-bundle install
-```
 
-Then, and every time you update your native dependencies, run:
+## Complete User Flow
 
-```sh
-bundle exec pod install
-```
+### 1. Product Interaction
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+Users can:
+- Add a product directly
+- Select product variants using bottom sheet
 
-```sh
-# Using npm
-npm run ios
+Behavior:
+- If product has options → Bottom sheet opens
+- If not → Product is added directly to cart
 
-# OR using Yarn
-yarn ios
-```
+---
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### 2. Product Options Bottom Sheet
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+This handles variant selection.
 
-## Step 3: Modify your app
+Features:
+- Multiple product variants
+- Quantity selection per variant
+- Dynamic pricing
+- Confirm action to add to cart
 
-Now that you have successfully run the app, let's make changes!
+---
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### 3. Cart Screen
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+The cart screen acts as the central control layer of the application.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+Sections include:
+- Header
+- Savings banner
+- Warning banner (if applicable)
+- Cart items
+- Suggested products
+- Coupon section
+- Delivery instructions
+- Price breakdown
+- Address section
+- Final checkout CTA
 
-## Congratulations! :tada:
+---
 
-You've successfully run and modified your React Native App. :partying_face:
+## Core Logic and Conditional Flows
 
-### Now what?
+### Cart State
+- Empty cart → Empty state UI
+- Filled cart → Render items and summary
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+---
 
-# Troubleshooting
+### Product State
+- Available → Normal interaction
+- Out of stock → Warning shown and restricted actions
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+---
 
-# Learn More
+### Quantity Management
+- Increment and decrement update:
+  - Individual item price
+  - Cart total
+  - Savings
 
-To learn more about React Native, take a look at the following resources:
+Handled using reusable component:
+- QuantityStepper
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+---
+
+### Coupon Handling
+
+States:
+- Not applied → User can apply coupon
+- Applied → Coupon highlighted
+- Discount reflected in total
+
+---
+
+### Delivery Mode Logic
+
+Two delivery types are supported:
+
+#### Instant Delivery
+- Available for nearby locations
+- Estimated delivery: 30–60 minutes
+
+#### Slot Delivery
+- Used when instant delivery is unavailable
+- User selects preferred time slot
+
+---
+
+### Address Handling
+
+Scenarios:
+- Address available → Display address with change option
+- No address → Prompt to add address
+- Not serviceable → Disable checkout with error message
+
+---
+
+### Login State
+
+- Logged-in user → Can proceed normally
+- Guest user → Prompt to login before checkout
+
+---
+
+### Price Calculation
+
+All values are dynamically computed:
+
+- Item total
+- Discount
+- Delivery fee
+- Platform fee
+- Final payable amount
+
+No hardcoded values are used.
+
+---
+
+## Reusable Components
+
+The application is built with reusable UI components:
+
+- CartItemCard → Displays cart items
+- QuantityStepper → Handles quantity changes
+- CouponCard → Displays coupon UI
+- DeliveryAddressSection → Handles address logic
+- ProductSuggestionCard → Horizontal product list
+- InfoBanner → Displays savings and messages
+
+---
+
+## Design System
+
+### Colors
+- Primary green for actions
+- Blue for informational banners
+- Orange for alerts and coupon highlights
+
+---
+
+### Spacing
+- Screen padding: 16
+- Card padding: 12–16
+- Consistent vertical spacing across sections
+
+---
+
+### Typography
+- Titles: Bold
+- Product names: Medium
+- Supporting text: Regular/light
+
+---
+
+## Performance Considerations
+
+- FlatList used for rendering lists
+- Component reusability minimizes re-renders
+- Efficient state updates
+- Modular architecture for future scaling
+
+---
+
+## Testing Guide for Reviewers
+
+The application is designed so that all flows can be tested easily.
+
+### Product Flow
+- Add simple product
+- Add product with variants
+
+---
+
+### Cart Updates
+- Increase and decrease quantity
+- Verify real-time total updates
+
+---
+
+### Coupons
+- Apply coupon
+- Switch between coupons
+
+---
+
+### Delivery Modes
+- Test instant delivery
+- Test slot delivery
+
+---
+
+### Address Handling
+- Add Default address
+- Remove address
+- Test non-serviceable location
+
+---
+
+
+
