@@ -4,7 +4,11 @@
 
 Click below to watch full demo of the cart flow implementation:
 
-[![App Demo](./assets/image.png)](https://drive.google.com/file/d/1K8uL5KFNPUjlF-c76kAM0pCi8KmeS6bP/view?usp=sharing)
+<p align="center">
+  <a href="https://drive.google.com/file/d/1K8uL5KFNPUjlF-c76kAM0pCi8KmeS6bP/view?usp=sharing">
+    <img src="./assets/image.png" width="300"/>
+  </a>
+</p>
 
 ## Overview
 
